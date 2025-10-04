@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Crowd Detection</title>
+  <style>
+    body { text-align: center; background: #111; color: white; font-family: Arial; }
+    #video { border: 4px solid #00ffcc; border-radius: 10px; }
+    #alert { font-size: 22px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Crowd Detection with Heatmap</h1>
+  <img id="video" src="{{ url_for('video_feed') }}" width="720">
+  <div id="alert">Monitoring...</div>
+
+  <script>
+    setInterval(() => {
+      fetch("/alert_status")
+        .then(res => res.json())
+        .then(data => {
+          let alertDiv = document.getElementById("alert");
+          if (data.alert) {
+            alertDiv.innerHTML = "🚨 CROWD ALERT 🚨 Count: " + data.count;
+            alertDiv.style.color = "red";
+          } else {
+            alertDiv.innerHTML = "✅ Safe | Count: " + data.count;
+            alertDiv.style.color = "lime";
+          }
+        });
+    }, 1000);
+  </script>
+</body>
+</html>

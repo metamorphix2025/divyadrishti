@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fire Detection</title>
+    <style>
+        body { text-align: center; font-family: Arial; background: #111; color: white; }
+        h1 { color: red; }
+        img { border: 3px solid white; margin-top: 20px; width: 80%; max-width: 800px; }
+        #alert { font-size: 24px; margin-top: 20px; color: yellow; }
+    </style>
+    <script>
+        async function checkAlert() {
+            let res = await fetch('/alert_status');
+            let data = await res.json();
+            document.getElementById("alert").innerText =
+                data.fire_detected ? "🔥 FIRE ALERT DETECTED!" : "✅ Safe";
+        }
+        setInterval(checkAlert, 1000);
+    </script>
+</head>
+<body>
+    <h1>🔥 Real-Time Fire Detection</h1>
+    <img src="{{ url_for('video_feed') }}">
+    <div id="alert">Checking...</div>
+</body>
+</html>
